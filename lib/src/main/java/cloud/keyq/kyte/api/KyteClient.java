@@ -1,4 +1,4 @@
-package kyte;
+package cloud.keyq.kyte.api;
 
 import java.util.Base64;
 import java.util.Map;
@@ -25,7 +25,7 @@ import org.apache.http.client.methods.HttpDelete;
 import org.apache.http.util.EntityUtils;
 import org.json.JSONObject;
 
-public class Client {
+public class KyteClient {
 
     private String publicKey;
     private String privateKey;
@@ -39,7 +39,7 @@ public class Client {
     private String passwordField = "password";
 
     // Constructor
-    public Client(String publicKey, String privateKey, String kyteAccount, String kyteIdentifier, String kyteEndpoint, String kyteAppId) {
+    public KyteClient(String publicKey, String privateKey, String kyteAccount, String kyteIdentifier, String kyteEndpoint, String kyteAppId) {
         this.publicKey = publicKey;
         this.privateKey = privateKey;
         this.kyteAccount = kyteAccount;
@@ -52,11 +52,24 @@ public class Client {
         return Base64.getEncoder().encodeToString(data.getBytes(StandardCharsets.UTF_8));
     }
 
-    private String hmacSha256(String data, byte[] key) throws NoSuchAlgorithmException, InvalidKeyException {
+    private byte[] hmacSha256(String data, byte[] key) throws NoSuchAlgorithmException, InvalidKeyException {
         Mac sha256Hmac = Mac.getInstance("HmacSHA256");
         SecretKeySpec secretKey = new SecretKeySpec(key, "HmacSHA256");
         sha256Hmac.init(secretKey);
-        return Base64.getEncoder().encodeToString(sha256Hmac.doFinal(data.getBytes(StandardCharsets.UTF_8)));
+        
+        return sha256Hmac.doFinal(data.getBytes(StandardCharsets.UTF_8));
+    }
+    
+    private static String bytesToHex(byte[] bytes) {
+        StringBuilder hexString = new StringBuilder();
+        for (byte b : bytes) {
+            String hex = Integer.toHexString(0xff & b);
+            if (hex.length() == 1) {
+                hexString.append('0');
+            }
+            hexString.append(hex);
+        }
+        return hexString.toString();
     }
 
     public String getIdentity(String timestamp) throws Exception {
@@ -66,9 +79,9 @@ public class Client {
 
     public String getSignature(String epoch) throws NoSuchAlgorithmException, InvalidKeyException {
         String txToken = "0";
-        String key1 = hmacSha256(txToken, privateKey.getBytes(StandardCharsets.UTF_8));
-        String key2 = hmacSha256(kyteIdentifier, key1.getBytes(StandardCharsets.UTF_8));
-        return hmacSha256(epoch, key2.getBytes(StandardCharsets.UTF_8));
+        byte[] key1 = hmacSha256(txToken, privateKey.getBytes(StandardCharsets.UTF_8));
+        byte[] key2 = hmacSha256(kyteIdentifier, key1);
+        return bytesToHex(hmacSha256(epoch, key2));
     }
 
     private JSONObject request(String method, String model, String field, String value, JSONObject data, Map<String, String> headers) throws Exception {

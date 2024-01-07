@@ -9,12 +9,17 @@
 plugins {
     // Apply the java-library plugin for API and implementation separation.
     id 'java-library'
+    id 'maven-publish'
 }
 
 repositories {
     // Use Maven Central for resolving dependencies.
     mavenCentral()
 }
+
+version = '1.0.0'
+archivesBaseName = 'kyte'
+group = 'cloud.keyq'
 
 dependencies {
     // Use JUnit Jupiter for testing.
