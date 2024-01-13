@@ -1,5 +1,7 @@
 # Kyte API Java Client Library
 
+[![Java CI with Gradle](https://github.com/keyqcloud/kyte-api-java/actions/workflows/gradle.yml/badge.svg)](https://github.com/keyqcloud/kyte-api-java/actions/workflows/gradle.yml)
+
 ## Overview
 The Kyte API Java Client Library is a robust and easy-to-use Java interface for interacting with the Kyte API. It provides methods for secure HTTP requests, supporting operations like GET, POST, PUT, and DELETE. The library includes functionality for authentication, signature generation using HMAC SHA-256, and handling responses in JSON format.
 
