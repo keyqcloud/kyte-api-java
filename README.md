@@ -1,5 +1,8 @@
 # Kyte API Java Client Library
 
+> [!WARNING]
+> **Archived: no longer maintained.** This repository is read-only and kept for reference. It receives no further updates, including security fixes. The core of Kyte is in maintenance mode (security fixes through November 2027); see [kyte-php](https://github.com/keyqcloud/kyte-php).
+
 [![Java CI with Gradle](https://github.com/keyqcloud/kyte-api-java/actions/workflows/gradle.yml/badge.svg)](https://github.com/keyqcloud/kyte-api-java/actions/workflows/gradle.yml) [![CodeQL](https://github.com/keyqcloud/kyte-api-java/actions/workflows/codeql.yml/badge.svg)](https://github.com/keyqcloud/kyte-api-java/actions/workflows/codeql.yml)
 
 ## Overview
